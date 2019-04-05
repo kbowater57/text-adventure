@@ -1,0 +1,7 @@
+You find yourself in the south-west corner of a rectangular
+earthen-walled room lit by a torch on the northern wall.
+Commands:
+move [direction] : Moves you in direction = n,e,s,w
+inv : Lists your current inventory
+stat: Lists your current status
+look: Describes your immediate environment
