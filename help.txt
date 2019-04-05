@@ -1,0 +1,6 @@
+Commands:
+move [direction] : Moves you in direction = n,e,s,w
+inv : Lists your current inventory
+stat: Lists your current status
+look: Describes your immediate environment
+help: Displays available commands
