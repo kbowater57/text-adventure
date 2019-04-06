@@ -26,6 +26,10 @@ def move(direction,character,room_point_set):
         print("You just walked into a wall. Ouch! You take 1 damage.")
         character["health"] -= 1
         return character
+    elif proposed_location == -2+2j and "torch" not in character["inv"]:
+        print("You were eaten by a grue. Better bring a torch next time.")
+        character["health"] = 0
+        return character
     else:
         character["location"] = proposed_location
         return character
@@ -50,13 +54,13 @@ def help_text():
     help.close()
     
 def room_desc(character):
-    room_text = "room1.txt"
+    room_text = ("room" + str(character["roomno"]) + ".txt")
     text = open(room_text,"r")
     for line in text:
         print(line)
     text.close()
     
-def check_room(location, room_points_dict):
+def check_room(character,location, room_points_dict):
     for number in range(len(room_points_dict)):
         if location in room_points_dict["room"+str(number)]:
             return number
@@ -99,7 +103,10 @@ while quest_complete == 0:
     if character["health"] <=0:
         print("Oh no! You died. Better luck next time!")
         break
-    character["roomno"]= check_room(character["location"],room_points_dict)
+    old_room = character["roomno"]
+    character["roomno"]= check_room(character,character["location"],room_points_dict)
+    if old_room != character["roomno"]:
+        room_desc(character)
     display_location(character)
     requested_action = input("What would you like to do? \n")
     if requested_action[0:5] == "move ":
