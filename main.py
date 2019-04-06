@@ -6,7 +6,7 @@ Created on Fri Apr  5 15:25:13 2019
 This will contain a basic text adventure game.
 """
 
-def move(direction,character,room):
+def move(direction,character,room_point_set):
     #direction = input("In which direction (n,e,s,w) would you like to move?\n")
     if direction == "n":
         dir_vector = 0+1j
@@ -22,10 +22,7 @@ def move(direction,character,room):
     
     proposed_location = character["location"] + dir_vector
     
-    if (proposed_location.real not in list(range(int(room.real))) or
-        int(proposed_location.imag) < 0 or int(abs(proposed_location.imag)) 
-        not in list(range(int(abs(room.imag))))):
-        
+    if proposed_location.real not in room_point_set:
         print("You just walked into a wall. Ouch! You take 1 damage.")
         character["health"] -= 1
         return character
@@ -36,9 +33,11 @@ def move(direction,character,room):
 
 def display_location(character):
     print(("You are at co-ordinate (" + str(int(character["location"].imag)) + ", " + 
-        str(int(character["location"].real)) + ") in room " + str(character["roomno"]) + ". Room " +
+        str(int(character["location"].real)) + ")."))
+    
+    """in room " + str(character["roomno"]) + ". Room " +
         str(character["roomno"]) + " is " + str(int(character["roomsize"].real)) 
-        + " wide by " + str(int(character["roomsize"].imag)) + " deep."))
+        + " wide by " + str(int(character["roomsize"].imag)) + " deep."))"""
     
 def stat(character):
     display_location(character)
@@ -51,7 +50,7 @@ def help_text():
     help.close()
     
 def room_desc(character):
-    room_text = "room" + str(character["roomno"]) + ".txt"
+    room_text = "room1.txt"
     text = open(room_text,"r")
     for line in text:
         print(line)
@@ -90,7 +89,7 @@ while quest_complete == 0:
         break
     requested_action = input("What would you like to do? \n")
     if requested_action[0:5] == "move ":
-        character = move(requested_action[5:],character,room1)
+        character = move(requested_action[5:],character,room_point_set)
     elif requested_action == "die":
         print("Oh no! You died. Better luck next time!")
         break
