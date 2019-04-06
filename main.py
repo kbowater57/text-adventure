@@ -22,7 +22,7 @@ def move(direction,character,room_point_set):
     
     proposed_location = character["location"] + dir_vector
     
-    if proposed_location.real not in room_point_set:
+    if proposed_location not in room_point_set:
         print("You just walked into a wall. Ouch! You take 1 damage.")
         character["health"] -= 1
         return character
@@ -32,8 +32,8 @@ def move(direction,character,room_point_set):
         return character
 
 def display_location(character):
-    print(("You are at co-ordinate (" + str(int(character["location"].imag)) + ", " + 
-        str(int(character["location"].real)) + ")."))
+    print(("You are at co-ordinate (" + str(int(character["location"].real)) + ", " + 
+        str(int(character["location"].imag)) + ")."))
     
     """in room " + str(character["roomno"]) + ". Room " +
         str(character["roomno"]) + " is " + str(int(character["roomsize"].real)) 
