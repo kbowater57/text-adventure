@@ -6,8 +6,8 @@ Created on Fri Apr  5 15:25:13 2019
 This will contain a basic text adventure game.
 """
 
-def move(character,room):
-    direction = input("In which direction (n,e,s,w) would you like to move?\n")
+def move(direction,character,room):
+    #direction = input("In which direction (n,e,s,w) would you like to move?\n")
     if direction == "n":
         dir_vector = 0+1j
     elif direction == "e":
@@ -57,11 +57,26 @@ def room_desc(character):
         print(line)
     text.close()
     
-    
-room1 = 4 + 5j
-character = {"location":0+0j,"health":2,"roomno":1, "roomsize":room1, "inv":{"sword":10}}
 
-#print(current_location["x"] in list(range(room1["length"])))
+
+def add_room(corner_dict,room_point_set):
+        for xcoord in range((int(corner_dict["corner_sw"].real)),
+                             (int(corner_dict["corner_ne"].real+1))):
+            for ycoord in range((int(corner_dict["corner_sw"].imag)),
+                             (int(corner_dict["corner_ne"].imag+1))):
+                room_point_set.add(complex(xcoord,ycoord))
+        return room_point_set
+    
+room_point_set=set()
+room1_dict = {"corner_ne": (4+5j),"corner_sw": (0+0j)}
+room2_dict = {"corner_ne": (-1+2j),"corner_sw": (-6+2j)}
+
+    
+room_point_set = add_room(room1_dict,room_point_set)
+room_point_set = add_room(room2_dict,room_point_set)
+
+character = {"location":0+0j,"health":2, "inv":{"sword":10}}
+
 
 room_desc(character)
 help_text()
@@ -74,8 +89,8 @@ while quest_complete == 0:
         print("Oh no! You died. Better luck next time!")
         break
     requested_action = input("What would you like to do? \n")
-    if requested_action == "move":
-        character = move(character,room1)
+    if requested_action[0:5] == "move ":
+        character = move(requested_action[5:],character,room1)
     elif requested_action == "die":
         print("Oh no! You died. Better luck next time!")
         break
