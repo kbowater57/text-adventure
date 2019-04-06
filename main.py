@@ -55,26 +55,30 @@ def room_desc(character):
     for line in text:
         print(line)
     text.close()
-    
-
 
 def add_room(corner_dict,room_point_set):
         for xcoord in range((int(corner_dict["corner_sw"].real)),
                              (int(corner_dict["corner_ne"].real+1))):
             for ycoord in range((int(corner_dict["corner_sw"].imag)),
                              (int(corner_dict["corner_ne"].imag+1))):
-                room_point_set.add(complex(xcoord,ycoord))
-        return room_point_set
+                room_point_list.append(complex(xcoord,ycoord))
+        return room_point_list
+
+#def check_room(location, room1_set,room2_set)
     
-room_point_set=set()
+room_point_list=list()
 room1_dict = {"corner_ne": (4+5j),"corner_sw": (0+0j)}
+room1_list = list()
+room1_list=add_room(room1_dict,room1_list)
 room2_dict = {"corner_ne": (-1+2j),"corner_sw": (-6+2j)}
+room2_list = list()
+room2_list=add_room(room2_dict,room2_list)
 
     
-room_point_set = add_room(room1_dict,room_point_set)
-room_point_set = add_room(room2_dict,room_point_set)
+room_point_list = add_room(room1_dict,room_point_list)
+room_point_list = add_room(room2_dict,room_point_list)
 
-character = {"location":0+0j,"health":2, "inv":{"sword":10}}
+character = {"location":0+0j,"health":2,"roomno":1, "inv":{"sword":10}}
 
 
 room_desc(character)
@@ -87,9 +91,10 @@ while quest_complete == 0:
     if character["health"] <=0:
         print("Oh no! You died. Better luck next time!")
         break
+    #character["roomno"]= check_room(character["location"],room1_set,room2_set)
     requested_action = input("What would you like to do? \n")
     if requested_action[0:5] == "move ":
-        character = move(requested_action[5:],character,room_point_set)
+        character = move(requested_action[5:],character,room_point_list)
     elif requested_action == "die":
         print("Oh no! You died. Better luck next time!")
         break
