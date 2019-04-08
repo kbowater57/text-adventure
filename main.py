@@ -32,15 +32,13 @@ def move(direction,character,room_point_set):
               "You have won the game!")
         character["quest_complete"] = 1
         return character
-    elif proposed_location == -2+2j and "torch" not in character["inv"]:
-        print(("If I had coded the ability to pick up the torch in the first"
+    else:
+        if proposed_location == -2+2j and "torch" not in character["inv"]:
+            print(("If I had coded the ability to pick up the torch in the first"
                "room yet, you would have been eaten by a grue at this "
                "point. Lucky you!"))
-        #character["health"] = 0
         character["location"] = proposed_location
-        return character
-    else:
-        character["location"] = proposed_location
+        character["direction"] = dir_vector
         return character
     
     """elif proposed_location == -2+2j and "torch" not in character["inv"]:
