@@ -27,12 +27,22 @@ def move(direction,character,room_point_set):
         character["health"] -= 1
         return character
     elif proposed_location == -10 + 7j:
-        print("You approach the chest, and throw it open eagerly. A huge bounty of gold coins lies within the chest. Congratulations! You have won the game!")
+        print("You approach the chest, and throw it open eagerly. A huge "
+              "bounty of gold coins lies within the chest. Congratulations! "
+              "You have won the game!")
         character["quest_complete"] = 1
+        return character
+    elif proposed_location == -2+2j and "torch" not in character["inv"]:
+        print(("If I had coded the ability to pick up the torch in the first"
+               "room yet, you would have been eaten by a grue at this "
+               "point. Lucky you!"))
+        #character["health"] = 0
+        character["location"] = proposed_location
         return character
     else:
         character["location"] = proposed_location
         return character
+    
     """elif proposed_location == -2+2j and "torch" not in character["inv"]:
         print("You were eaten by a grue. Better bring a torch next time.")
         character["health"] = 0
@@ -40,13 +50,9 @@ def move(direction,character,room_point_set):
     
 
 def display_location(character):
-    print(("You are at co-ordinate (" + str(int(character["location"].real)) + ", " + 
-        str(int(character["location"].imag)) + "), in room " + 
+    print(("You are at co-ordinate (" + str(int(character["local_coord"].real)) + ", " + 
+        str(int(character["local_coord"].imag)) + "), in room " + 
     str(character["roomno"]) + "." ))
-    
-    """+ ". Room " +
-        str(character["roomno"]) + " is " + str(int(character["roomsize"].real)) 
-        + " wide by " + str(int(character["roomsize"].imag)) + " deep."))"""
     
 def stat(character):
     display_location(character)
@@ -64,11 +70,15 @@ def room_desc(character):
     for line in text:
         print(line)
     text.close()
+    room_size = character["room_dict"]["corner_ne"]-character["room_dict"]["corner_sw"]
+    print("This room is " + str(int(room_size.real)) + " wide by " +
+           str(int(room_size.imag)) + " deep.")
     
-def check_room(character,location, room_points_dict):
+def check_room(character, room_points_dict):
     for number in range(len(room_points_dict)):
-        if location in room_points_dict["room"+str(number)]:
-            return number
+        if character["location"] in room_points_dict["room"+str(number)]:
+            character["roomno"] = number
+            return character
 
 def add_room(corner_dict,room_point_list):
         returned_list=list()
@@ -100,7 +110,8 @@ room_point_list = add_room(room0_dict,room_point_list)
 room_point_list = add_room(room1_dict,room_point_list)
 room_point_list = add_room(room2_dict,room_point_list)
 
-character = {"location":0+0j,"health":2,"roomno":0, "inv":{"sword":10}, "quest_complete":0}
+character = ({"location":0+0j,"health":2,"roomno":0, "inv":{"sword":10}, 
+              "quest_complete":0, "room_dict":room0_dict, "local_coord": 0+0j})
 
 
 room_desc(character)
@@ -114,7 +125,10 @@ while character["quest_complete"] == 0:
         print("Oh no! You died. Better luck next time!")
         break
     old_room = character["roomno"]
-    character["roomno"]= check_room(character,character["location"],room_points_dict)
+    character = check_room(character,room_points_dict)
+    character["room_dict"] = globals()["room"+str(character["roomno"])+"_dict"]
+    character["local_coord"] = (character["location"]- 
+             character["room_dict"]["corner_sw"])
     if old_room != character["roomno"]:
         room_desc(character)
     display_location(character)
