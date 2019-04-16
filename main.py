@@ -250,12 +250,21 @@ while character["quest_stage"] != "complete":
             character["quest_stage"] = "slay orc"
             print("You take the torch. "
                   "The area around you is now brightly lit.")
+        elif (requested_action[5:] == "orc" and
+              character["quest_stage"] == "find key"):
+            print("You pick up the orc. It's heavy, and as you try to shift "
+                  "its weight onto your shoulder, you slip, and end up pinned"
+                  " under its body, in an awkward position. You can't get "
+                  " out from under it. \n \n"
+                  " Some time later...\n \n")
+            character["health"] = 0
         else:
             print("There's no " + requested_action[5:] + " to take here.")
         
     # Handy command to exit game
     elif requested_action == "die":
-        print("Oh no! You died. Better luck next time!")
+        print("You attempt to do a backflip, and land on your head. Crunch! "
+              "Oh no! You died. Better luck next time!")
         break
     
     # Various commands to print information about the character and their
