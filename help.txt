@@ -1,6 +1,10 @@
 Commands:
-move [direction] : Moves you in direction = n,e,s,w
+move [n,e,s,w] : Moves you in direction n,e,s,w
+n,e,s,w also moves you in chosen direction
 inv : Lists your current inventory
 stat: Lists your current status
 look: Describes your immediate environment
 help: Displays available commands
+die : Die, exiting the game
+take [x]: Take [x], if there is one near you
+use [x]: Use [x], if you have one
