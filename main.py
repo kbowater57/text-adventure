@@ -49,10 +49,23 @@ def move(direction,character,room_point_set):
     return character    
 
 def display_location(character):
+    string_inserted_1 = ""
+    string_inserted_2 = ""
     print(("You are at co-ordinate (" + str(int(character["local_coord"].real)) + ", " + 
         str(int(character["local_coord"].imag)) + "), in room " + 
-    str(character["roomno"]) + ". You are facing " + character["dir_word"] + "."))
-    
+    str(character["roomno"]) + ". You are facing " ))
+    if( 
+    character["location"].real == character["room_dict"]["corner_sw"].real 
+    and character["dir_word"] == "east" or 
+    character["location"].real == character["room_dict"]["corner_ne"].real 
+    and character["dir_word"] == "west" or
+    character["location"].imag == character["room_dict"]["corner_sw"].imag 
+    and character["dir_word"] == "south" or
+    character["location"].imag == character["room_dict"]["corner_ne"].imag
+    and character["dir_word"] == "north"):
+        string_inserted_1 = "the "
+        string_inserted_2 = " wall"
+    print(string_inserted_1 + character["dir_word"] + string_inserted_2 + ".")
 def stat(character):
     display_location(character)
     print("You have " + str(character["health"]) + " hitpoints remaining.")
